@@ -12,11 +12,16 @@ import * as usersAPI from "../../utilities/users-api.js"
 
 export default function SignupPage({ setUser }) {
     const navigate = useNavigate();
-    const initialState = { username: "", password: "", confirmPassword: "", email: "" }
+    const initialState = { username: "", password: "", confirmPassword: "", email: "",profile:""}
     const [formData, setFormData] = useState(initialState)
-    const [errors, setErrors] = useState({ username: '', password: '', email: '', confirmPassword: ''});
+    const [errors, setErrors] = useState({ username: '', password: '', email: '', confirmPassword: '',profile:''});
     let disabledSubmitBtn = Object.values(errors).every(val => val === "") && Object.values(formData).every(val => val !== "") ? false : true
+    const [radioOp,setRadioOp] = useState("")
 
+    function handleRadioChange(evt){
+        setRadioOp({ ...formData, [evt.target.name]: evt.target.value })
+        checkErrors(evt);
+    }
     function handleChange(evt) {
         setFormData({ ...formData, [evt.target.name]: evt.target.value });
         checkErrors(evt);
@@ -36,6 +41,9 @@ export default function SignupPage({ setUser }) {
         }
         if (target.name === 'email') {
             updateErrors.email = !target.value.includes("@") ? "Your password must be a real email / include the '@' symbol." : "";
+        }
+        if (target.name === 'profile') {
+            updateErrors.profile = target.value === "" ? "You Need To Select an Option" : "";
         }
      
         setErrors(updateErrors);
@@ -57,7 +65,7 @@ export default function SignupPage({ setUser }) {
     return (<>
         <div className="page-header">
             
-            {/* <img src={nerdCat} alt="A cat using a computer" /> */}
+
         </div>
         <form  onSubmit={handleSubmit} className="form-container-signup">
             <h1 className="login">Sign Up</h1>
@@ -95,7 +103,22 @@ export default function SignupPage({ setUser }) {
                             { errors.confirmPassword && <p>{errors.confirmPassword}</p> }
                         </td>
                     </tr>
-
+                    <tr>
+                        <th><label htmlFor="is_teacher">Teacher</label></th>
+                        <td>
+                            <input  className="in" type="radio" name="profile" value={"Teacher"} onChange={handleRadioChange }/>
+                            <br/>
+                            { errors.profile && <p>{errors.profile}</p> }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label htmlFor="is_student">Student</label></th>
+                        <td>
+                            <input  className="in" type="radio" name="profile" value={"Student"} onChange={handleRadioChange }/>
+                            <br/>
+                            { errors.profile && <p>{errors.profile}</p> }
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <button type="submit" disabled={disabledSubmitBtn} className="btn-submit">Submit!</button>
