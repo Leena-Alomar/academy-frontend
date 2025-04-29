@@ -12,7 +12,7 @@ import * as usersAPI from "../../utilities/users-api.js"
 
 export default function SignupPage({ setUser }) {
     const navigate = useNavigate();
-    const initialState = { username: "", password: "", confirmPassword: "", email: "",profile:""}
+    const initialState = { username: "", password: "", confirmPassword: "", email: "", profile:""}
     const [formData, setFormData] = useState(initialState)
     const [errors, setErrors] = useState({ username: '', password: '', email: '', confirmPassword: '',profile:''});
     let disabledSubmitBtn = Object.values(errors).every(val => val === "") && Object.values(formData).every(val => val !== "") ? false : true
@@ -52,7 +52,9 @@ export default function SignupPage({ setUser }) {
     async function handleSubmit(evt) {
         try {
             evt.preventDefault()
+            console.log("testing sign up")
             const newUser = await usersAPI.signup(formData);
+            console.log("testing sign up after", newUser)
             setUser(newUser);
             setFormData(initialState)
             navigate("/home")

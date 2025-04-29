@@ -43,3 +43,10 @@ export async function getUser() {
         return null;
     }
 }
+
+
+export async function createProfile(formData) {
+
+        return  sendRequest(`${url}/profile/`, "POST", formData)
+
+}
